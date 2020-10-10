@@ -36,7 +36,7 @@ const CartScreen = ({ match, location, history }) => {
                 {cartItems.length === 0 ? <Message>Your cart is empty <Link to='/'>Go Back</Link> </Message>
                     : <ListGroup variant='flush'>
                         {cartItems.map(item => (
-                            <ListGroup.Item>
+                            <ListGroup.Item key={item.product}>
                                 <Row>
                                     <Col md={2}>
                                         <Image src={item.image} alt={item.name} fluid rounded />
