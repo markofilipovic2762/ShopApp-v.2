@@ -5,6 +5,7 @@ import connectDB from './config/db.js'
 
 import productRoute from './routes/productRoute.js'
 import userRoute from './routes/userRoute.js'
+import orderRoute from './routes/orderRoute.js'
 
 dotenv.config()
 
@@ -20,6 +21,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoute)
 app.use('/api/users', userRoute)
+app.use('/api/orders', orderRoute)
+
 app.use(notFound, errorHandler)
 
 const PORT = process.env.PORT || 5000
