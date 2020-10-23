@@ -27,7 +27,7 @@ const PlaceOrderScreen = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-            history.push(`/order/${order._id}`)
+            history.push(`/orders/${order._id}`)
         }
         // eslint-disable-next-line
     }, [history, success])
@@ -65,7 +65,7 @@ const PlaceOrderScreen = ({ history }) => {
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <h2>Order Items</h2>
-                        {cart.cartItems.length === 0 ? <Message variant='danger'>Your card is empty</Message>
+                        {cart.cartItems.length === 0 ? <Message variant='danger'>Your cart is empty</Message>
                             : (
                                 <ListGroup variant='flush'>
                                     {cart.cartItems.map((item, index) => (
