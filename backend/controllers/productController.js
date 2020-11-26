@@ -2,21 +2,72 @@ import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
 
 const getProducts = asyncHandler(async (req, res) => {
+    const match = {}
+    const sortBy = {}
     const pageSize = 10
     const page = Number(req.query.pageNumber) || 1
 
-    const keyword = req.query.keyword ? {
+    match.name = req.query.keyword ? {
         name: {
             $regex: req.query.keyword,
             $options: 'i'
         }
+    }
+        : {}
+
+    match.category = req.query.category ? {
+        category: req.query.category
+    } : {}
+    match.brand = req.query.brand ? {
+        brand: req.query.brand
     } : {}
 
-    const count = await Product.countDocuments({ ...keyword })
-    const products = await Product.find({ ...keyword }).limit(pageSize)
-        .skip(pageSize * (page - 1))
+    if (req.query.maxPrice) {
+        if (req.query.minPrice) {
+            match.price = {
+                price: { $gte: req.query.minPrice, $lte: req.query.maxPrice }
+            }
+        } else {
+            match.price = {
+                price: { $lte: req.query.maxPrice }
+            }
+        }
+    }
+
+    if (req.query.sortBy) {
+        const str = req.query.sortBy.split(':')
+        sortBy[str[0]] = str[1] === 'desc' ? -1 : 1
+    }
+
+    const count = await Product.countDocuments({ ...match.name, ...match.category, ...match.brand, ...match.price })
+    const products = await Product.find({ ...match.name, ...match.category, ...match.brand, ...match.price }).limit(pageSize)
+        .skip(pageSize * (page - 1)).sort(sortBy)
+
+    console.log({ ...match })
 
     res.json({ products, page, pages: Math.ceil(count / pageSize) })
+})
+
+const getBrandList = asyncHandler(async (req, res) => {
+    const brands = await Product.distinct("brand")
+
+    if (brands) {
+        res.json(brands)
+    } else {
+        res.status(404)
+        throw new Error('Brands not found')
+    }
+})
+
+const getCategoryList = asyncHandler(async (req, res) => {
+    const categories = await Product.distinct("category")
+
+    if (categories) {
+        res.json(categories)
+    } else {
+        res.status(404)
+        throw new Error('categories not found')
+    }
 })
 
 const getProductById = asyncHandler(async (req, res) => {
@@ -127,5 +178,8 @@ export {
     createProduct,
     updateProduct,
     createProductReview,
-    getTopProducts
+    getTopProducts,
+    getBrandList,
+    getCategoryList
+
 }

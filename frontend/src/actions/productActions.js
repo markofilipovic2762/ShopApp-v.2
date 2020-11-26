@@ -6,15 +6,38 @@ import {
     PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_SUCCESS, PRODUCT_CREATE_FAIL,
     PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_FAIL, PRODUCT_UPDATE_SUCCESS,
     PRODUCT_CREATE_REVIEW_REQUEST, PRODUCT_CREATE_REVIEW_SUCCESS, PRODUCT_CREATE_REVIEW_FAIL,
-    PRODUCT_TOP_REQUEST, PRODUCT_TOP_SUCCESS, PRODUCT_TOP_FAIL
+    PRODUCT_TOP_REQUEST, PRODUCT_TOP_SUCCESS, PRODUCT_TOP_FAIL,
+    PRODUCT_BRANDS_REQUEST, PRODUCT_BRANDS_SUCCESS, PRODUCT_BRANDS_FAIL,
+    PRODUCT_CATEGORIES_REQUEST, PRODUCT_CATEGORIES_SUCCESS, PRODUCT_CATEGORIES_FAIL
 }
     from '../constants/productConstants'
 
-export const listProducts = (keyword = '', pageNumber = '') => async (dispatch) => {
+export const listProducts = (keyword = '', pageNumber = '', filters) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
 
-        const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`)
+        let urlProducts = `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+
+        if (filters.brand) {
+            filters.brand.forEach(element => {
+                urlProducts = urlProducts + '&brand=' + element
+            });
+        }
+        if (filters.category) {
+            filters.category.forEach(element => {
+                urlProducts = urlProducts + '&category=' + element
+            });
+        }
+        if (filters.price) {
+            if (filters.price.maxPrice) {
+                urlProducts = urlProducts + '&maxPrice=' + filters.price.maxPrice
+            }
+            if (filters.price.minPrice) {
+                urlProducts = urlProducts + '&minPrice=' + filters.price.minPrice
+            }
+        }
+
+        const { data } = await axios.get(urlProducts)
 
         dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })
     } catch (error) {
@@ -164,6 +187,40 @@ export const listTopProducts = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: PRODUCT_TOP_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        })
+    }
+}
+
+export const listBrands = () => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_BRANDS_REQUEST })
+
+        const { data } = await axios.get(`/api/products/brands`)
+
+        dispatch({ type: PRODUCT_BRANDS_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_BRANDS_FAIL,
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        })
+    }
+}
+
+export const listCategories = () => async (dispatch) => {
+    try {
+        dispatch({ type: PRODUCT_CATEGORIES_REQUEST })
+
+        const { data } = await axios.get(`/api/products/categories`)
+
+        dispatch({ type: PRODUCT_CATEGORIES_SUCCESS, payload: data })
+    } catch (error) {
+        dispatch({
+            type: PRODUCT_CATEGORIES_FAIL,
             payload: error.response && error.response.data.message
                 ? error.response.data.message
                 : error.message
