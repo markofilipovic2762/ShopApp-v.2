@@ -22,17 +22,19 @@ const getProducts = asyncHandler(async (req, res) => {
         brand: req.query.brand
     } : {}
 
-    if (req.query.maxPrice) {
-        if (req.query.minPrice) {
-            match.price = {
-                price: { $gte: req.query.minPrice, $lte: req.query.maxPrice }
-            }
-        } else {
-            match.price = {
-                price: { $lte: req.query.maxPrice }
-            }
+    if (req.query.minPrice && req.query.maxPrice) {
+        match.price = {
+            price: { $gte: Number(req.query.minPrice), $lte: Number(req.query.maxPrice) }
         }
-    }
+    } else if (req.query.maxPrice) {
+        match.price = {
+            price: { $lte: Number(req.query.maxPrice) }
+        }
+    } else if (req.query.minPrice) {
+        match.price = {
+            price: { $gte: Number(req.query.minPrice) }
+        }
+    } else { }
 
     if (req.query.sortBy) {
         const str = req.query.sortBy.split(':')
@@ -101,6 +103,7 @@ const createProduct = asyncHandler(async (req, res) => {
         image: '/images/sample.jpg',
         brand: 'sample brand',
         category: 'sample category',
+        sizes: [],
         countInStock: 0,
         numReviews: 0,
         description: 'Sample description'
@@ -111,7 +114,7 @@ const createProduct = asyncHandler(async (req, res) => {
 })
 
 const updateProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, image, brand, category, countInStock } = req.body
+    const { name, price, description, image, brand, category, sizes, countInStock } = req.body
 
     const product = await Product.findById(req.params.id)
 
@@ -122,6 +125,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.image = image
         product.brand = brand
         product.category = category
+        product.sizes = sizes
         product.countInStock = countInStock
 
         const updatedProduct = await product.save()

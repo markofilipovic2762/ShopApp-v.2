@@ -67,10 +67,15 @@ const ProductScreen = ({ match, history }) => {
                                 />
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                Price: ${product.price}
+                                Price: {product.price} RSD
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 Description: {product.description}
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                Sizes: {
+                                    product.sizes.map((x, i) => <h5 key={i}>{x.label}</h5>)
+                                }
                             </ListGroup.Item>
                         </ListGroup>
                     </Col>
@@ -81,7 +86,7 @@ const ProductScreen = ({ match, history }) => {
                                     <Row>
                                         <Col>
                                             Price:
-                                </Col>
+                                        </Col>
                                         <Col>
                                             <strong>${product.price}</strong>
                                         </Col>
@@ -91,7 +96,7 @@ const ProductScreen = ({ match, history }) => {
                                     <Row>
                                         <Col>
                                             Status:
-                                </Col>
+                                        </Col>
                                         <Col>
                                             {product.countInStock > 0 ? 'In stock' : 'Out of stock'}
                                         </Col>

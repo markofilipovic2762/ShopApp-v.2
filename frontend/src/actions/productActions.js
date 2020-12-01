@@ -30,10 +30,10 @@ export const listProducts = (keyword = '', pageNumber = '', filters) => async (d
         }
         if (filters.price) {
             if (filters.price.maxPrice) {
-                urlProducts = urlProducts + '&maxPrice=' + filters.price.maxPrice
+                urlProducts = urlProducts + '&maxPrice=' + Number(filters.price.maxPrice, 10)
             }
             if (filters.price.minPrice) {
-                urlProducts = urlProducts + '&minPrice=' + filters.price.minPrice
+                urlProducts = urlProducts + '&minPrice=' + Number(filters.price.minPrice, 10)
             }
         }
 

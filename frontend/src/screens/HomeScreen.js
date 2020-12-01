@@ -12,6 +12,7 @@ import Meta from '../components/Meta'
 import CollapseCheckbox from '../components/CollapseCheckbox'
 import Button from '@material-ui/core/Button';
 import FilterTiltShiftIcon from '@material-ui/icons/FilterTiltShift';
+import CollapsePrice from '../components/CollapsePrice'
 
 const HomeScreen = ({ match }) => {
     const keyword = match.params.keyword
@@ -31,7 +32,7 @@ const HomeScreen = ({ match }) => {
     const [filters, setFilters] = useState({
         brand: [],
         category: [],
-        price: { minPrice: 0, maxPrice: 0 }
+        price: { minPrice: '', maxPrice: '' }
     })
 
     useEffect(() => {
@@ -40,19 +41,6 @@ const HomeScreen = ({ match }) => {
         dispatch(listCategories())
 
     }, [dispatch])
-
-    const handlePrice = (value) => {
-        // const data = price;
-        // let array = [];
-
-        // for (let key in data) {
-        //     if (data[key]._id === parseInt(value, 10)) {
-        //         array = data[key].array
-        //     }
-        // }
-        // return array;
-    }
-
     // const showFilteredResults = (filters) => {
     //     dispatch(listProducts(keyword, pageNumber, filters))
     // }
@@ -76,7 +64,10 @@ const HomeScreen = ({ match }) => {
         <>
             {console.log(filters)}
             <Meta />
-            {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>}
+            {!keyword ? <div>
+                <h1 className="top-products">Top Products</h1>
+                <ProductCarousel />
+            </div> : <Link to='/' className='btn btn-light'>Go Back</Link>}
             <h1 className='text-center'>Latest Products</h1>
             {loading ? <Loader />
                 : error ? <Message variant='danger'>{error}</Message>
@@ -102,8 +93,15 @@ const HomeScreen = ({ match }) => {
                                             handleFilters={(filters) => handleFilters(filters, 'category')}
                                         />
                                     }
+                                    <CollapsePrice
+                                        initState={false}
+                                        title="Price"
+                                        handleFilters={(filters) => handleFilters(filters, 'price')}
+                                    />
                                     <Button
+                                        size="large"
                                         variant="contained"
+                                        fullWidth
                                         color="primary"
                                         size="small"
                                         startIcon={<FilterTiltShiftIcon />}

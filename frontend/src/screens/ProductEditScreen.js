@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import { Link } from "react-router-dom"
 import { Form, Button } from "react-bootstrap"
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,20 +9,34 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from "../actions/productActions"
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
+import { sizesList } from '../sizesList'
+import Select from 'react-select'
 
-const ProductEditScreen = ({ match, history }) => {
+const ProductEditScreen = ({ match }) => {
     const productId = match.params.id
+    const customTheme = (theme) => {
+        return {
+            ...theme,
+            colors: {
+                ...theme.colors,
+                primary25: 'orange',
+                primary: 'green'
+            }
+        }
+    }
 
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
     const [image, setImage] = useState('')
     const [brand, setBrand] = useState('')
     const [category, setCategory] = useState('')
+    const [sizes, setSizes] = useState([])
     const [countInStock, setCountInStock] = useState(0)
     const [description, setDescription] = useState('')
     const [uploading, setUploading] = useState(false)
 
     const dispatch = useDispatch()
+    const history = useHistory()
 
     const productDetails = useSelector(state => state.productDetails)
     const { loading, error, product } = productDetails
@@ -31,8 +46,8 @@ const ProductEditScreen = ({ match, history }) => {
 
     useEffect(() => {
         if (successUpdate) {
-            dispatch({ type: PRODUCT_UPDATE_RESET })
             history.push('/admin/productlist')
+            dispatch({ type: PRODUCT_UPDATE_RESET })
         } else {
             if (!product.name || product._id !== productId) {
                 dispatch(listProductDetails(productId))
@@ -42,6 +57,7 @@ const ProductEditScreen = ({ match, history }) => {
                 setImage(product.image)
                 setBrand(product.brand)
                 setCategory(product.category)
+                setSizes(product.sizes)
                 setCountInStock(product.countInStock)
                 setDescription(product.description)
             }
@@ -81,6 +97,7 @@ const ProductEditScreen = ({ match, history }) => {
             image,
             brand,
             category,
+            sizes,
             description,
             countInStock
         }))
@@ -160,6 +177,15 @@ const ProductEditScreen = ({ match, history }) => {
                                     onChange={e => setCategory(e.target.value)}
                                 ></Form.Control>
                             </Form.Group>
+
+                            <Select
+                                theme={customTheme}
+                                options={sizesList}
+                                onChange={setSizes}
+                                className='mb-3'
+                                placeholder='Enter sizes of shoes'
+                                isMulti
+                            />
 
                             <Form.Group controlId='description'>
                                 <Form.Label>Description</Form.Label>
