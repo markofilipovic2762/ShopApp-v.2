@@ -65,7 +65,8 @@ const CollapseCheckbox = ({ initState, title, list, handleFilters }) => {
             <List style={{ borderBottom: '1px solid #dbdbdb' }}>
                 <ListItem onClick={handleClick} style={{ padding: '10px 23px 10px 0' }} >
                     <ListItemText
-                        primary={title} style={{ color: '#4bbf73' }}
+                        primary={title}
+                        style={{ color: '#00e676', fontWeight: 'bold' }}
                     />
                     {handleAngle()}
                 </ListItem>

@@ -21,7 +21,7 @@ const Product = ({ product }) => {
                         text={`${product.numReviews} reviews`}
                     />
                 </Card.Text>
-                <Card.Text as='h4' className='mt-2'>{product.price} rsd</Card.Text>
+                <Card.Text as='h4' className='mt-2'>{product.price} usd</Card.Text>
             </Card.Body>
         </Card>
     )

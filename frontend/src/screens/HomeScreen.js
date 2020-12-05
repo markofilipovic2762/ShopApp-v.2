@@ -13,6 +13,7 @@ import CollapseCheckbox from '../components/CollapseCheckbox'
 import Button from '@material-ui/core/Button';
 import FilterTiltShiftIcon from '@material-ui/icons/FilterTiltShift';
 import CollapsePrice from '../components/CollapsePrice'
+import Sort from '../components/Sort'
 
 const HomeScreen = ({ match }) => {
     const keyword = match.params.keyword
@@ -41,20 +42,10 @@ const HomeScreen = ({ match }) => {
         dispatch(listCategories())
 
     }, [dispatch])
-    // const showFilteredResults = (filters) => {
-    //     dispatch(listProducts(keyword, pageNumber, filters))
-    // }
 
     const handleFilters = (filteri, category) => {
         const newFilters = { ...filters }
         newFilters[category] = filteri;
-
-        // if (category === "price") {
-        //     let priceValues = handlePrice(filteri);
-        //     newFilters[category] = priceValues
-        // }
-
-        //showFilteredResults(newFilters);
         setFilters(newFilters)
     }
 
@@ -62,7 +53,7 @@ const HomeScreen = ({ match }) => {
 
     return (
         <>
-            {console.log(filters)}
+            {/* {console.log(filters)} */}
             <Meta />
             {!keyword ? <div>
                 <h1 className="top-products">Top Products</h1>
@@ -73,6 +64,12 @@ const HomeScreen = ({ match }) => {
                 : error ? <Message variant='danger'>{error}</Message>
                     : (
                         <>
+                            <Row>
+                                <Col md={{ span: 2, offset: 10 }} className="sort">
+                                    <Sort />
+                                </Col>
+
+                            </Row>
                             <Row>
                                 <Col sm={12} md={3} xl={3}>
                                     {loadingBrands ? <Loader /> : errorBrands ? <Message variant='danger'>{errorBrands}</Message>
@@ -123,6 +120,7 @@ const HomeScreen = ({ match }) => {
 
                             </Row>
                             <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
+                            {console.log(products)}
                         </>
                     )
             }

@@ -26,13 +26,13 @@ const ProductScreen = ({ match, history }) => {
     const { error: errorProductReview, success: successProductReview } = productReviewCreate
 
     useEffect(() => {
+        dispatch(listProductDetails(match.params.id))
         if (successProductReview) {
             alert('Review Submited')
             setRating(0)
             setComment('')
             dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
         }
-        dispatch(listProductDetails(match.params.id))
     }, [dispatch, match, successProductReview])
 
     const addToCartHandler = () => {
@@ -46,6 +46,19 @@ const ProductScreen = ({ match, history }) => {
             comment
         }))
     }
+
+    const fetchSizes = () => {
+        let list = []
+        if (product.sizes)
+            for (const key in product.sizes) {
+                if (product.sizes.hasOwnProperty(key)) {
+                    const element = product.sizes[key];
+                    list.push(element)
+                }
+            }
+        return list
+    }
+
 
     return <>
         <Link className='btn btn-light my-3' to='/'>Go back</Link>
@@ -67,16 +80,15 @@ const ProductScreen = ({ match, history }) => {
                                 />
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                Price: {product.price} RSD
+                                Price: {product.price} USD
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 Description: {product.description}
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                Sizes: {
-                                    product.sizes.map((x, i) => <h5 key={i}>{x.label}</h5>)
-                                }
+                                Sizes: {fetchSizes().map((x, i) => <ListGroup.Item key={i}>{x.label}</ListGroup.Item>)}
                             </ListGroup.Item>
+
                         </ListGroup>
                     </Col>
                     <Col md={3}>
@@ -183,6 +195,7 @@ const ProductScreen = ({ match, history }) => {
                         </ListGroup>
                     </Col>
                 </Row>
+                {console.log(typeof (product.sizes))}
             </>
         )}
 

@@ -51,7 +51,7 @@ const CollapsePrice = ({ initState, title, handleFilters }) => {
             <List style={{ borderBottom: '1px solid #dbdbdb' }}>
                 <ListItem onClick={handleClick} style={{ padding: '10px 23px 10px 0' }} >
                     <ListItemText
-                        primary={title} style={{ color: '#4bbf73' }}
+                        primary={title} style={{ color: '#00e676', fontWeight: 'bold' }}
                     />
                     {handleAngle()}
                 </ListItem>
@@ -63,7 +63,7 @@ const CollapsePrice = ({ initState, title, handleFilters }) => {
                             value={price.minPrice}
                             id="minprice"
                             onChange={handleChangeMin}
-                            startAdornment={<InputAdornment position="start">RSD</InputAdornment>}
+                            startAdornment={<InputAdornment position="start">USD</InputAdornment>}
                         />
                     </FormControl>
                     <FormControl fullWidth>
@@ -73,7 +73,7 @@ const CollapsePrice = ({ initState, title, handleFilters }) => {
                             value={price.maxPrice}
                             id="maxprice"
                             onChange={handleChangeMax}
-                            startAdornment={<InputAdornment position="start">RSD</InputAdornment>}
+                            startAdornment={<InputAdornment position="start">USD</InputAdornment>}
                         />
                     </FormControl>
                 </Collapse>

@@ -68,7 +68,22 @@ div h1.top-products {
   transition: transform .2s
 }
 
+a:hover {
+  text-decoration: none;
+}
+
 .card:hover {
-  filter: brightness(93%);
+  background: rgba(43, 177, 2, 0.144);
   transform: scale(1.1);
+  box-shadow: 0 4px 8px 0 rgba(201, 140, 140, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.brand {
+  font-family: 'Rochester', cursive;
+  font-size: 1.7rem;
+}
+
+.navbar-dark .navbar-brand {
+  color: #00e676
 }
