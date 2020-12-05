@@ -37,6 +37,10 @@ export const listProducts = (keyword = '', pageNumber = '', filters) => async (d
             }
         }
 
+        if (filters.sortBy) {
+            urlProducts = urlProducts + '&sortBy=' + filters.sortBy
+        }
+
         const { data } = await axios.get(urlProducts)
 
         dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data })

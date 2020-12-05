@@ -33,7 +33,8 @@ const HomeScreen = ({ match }) => {
     const [filters, setFilters] = useState({
         brand: [],
         category: [],
-        price: { minPrice: '', maxPrice: '' }
+        price: { minPrice: '', maxPrice: '' },
+        sortBy: 'name:asc'
     })
 
     useEffect(() => {
@@ -41,7 +42,7 @@ const HomeScreen = ({ match }) => {
         dispatch(listBrands())
         dispatch(listCategories())
 
-    }, [dispatch])
+    }, [dispatch, filters.sortBy])
 
     const handleFilters = (filteri, category) => {
         const newFilters = { ...filters }
@@ -65,8 +66,8 @@ const HomeScreen = ({ match }) => {
                     : (
                         <>
                             <Row>
-                                <Col md={{ span: 2, offset: 10 }} className="sort">
-                                    <Sort />
+                                <Col md={{ span: 2, offset: 10 }} xs={12} sm={9} className="sort">
+                                    <Sort handleFilters={filters => handleFilters(filters, 'sortBy')} />
                                 </Col>
 
                             </Row>
