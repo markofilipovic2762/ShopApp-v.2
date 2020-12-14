@@ -4,7 +4,7 @@ import Product from '../models/productModel.js'
 const getProducts = asyncHandler(async (req, res) => {
     const match = {}
     const sortBy = {}
-    const pageSize = 10
+    const pageSize = 12
     const page = Number(req.query.pageNumber) || 1
 
     match.name = req.query.keyword ? {
