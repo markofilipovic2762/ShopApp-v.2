@@ -101,7 +101,6 @@ const HomeScreen = ({ match }) => {
                                         variant="contained"
                                         fullWidth
                                         color="primary"
-                                        size="small"
                                         startIcon={<FilterTiltShiftIcon />}
                                         onClick={() => dispatch(listProducts(keyword, pageNumber, filters))}
                                     >

@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend\\controllers",
+    "\\frontend",
+    "\\frontend\\src",
+    "\\frontend\\src\\screens"
   ],
+  "SelectedNode": "\\frontend\\src\\screens\\HomeScreen.js",
   "PreviewInSolutionExplorer": false
 }
