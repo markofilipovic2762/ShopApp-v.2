@@ -119,6 +119,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 
     if (product) {
+        product.user = req.user.id,
         product.name = name
         product.price = price
         product.description = description
